@@ -1,5 +1,6 @@
 package taxi.labs;
 
+import org.apache.spark.Accumulator;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -56,6 +57,16 @@ public class Main {
         JavaPairRDD<String, Tuple2<Integer, String>> joined = sortedTuples.join(driverNames);
         joined.collect().forEach(System.out::println);
         joined.map(tuple-> tuple._2()._2()).collect().forEach(System.out::println);
+
+        Accumulator<Integer> accumulator = sc.accumulator(0, "lessThan5Miles");
+        rdd.map(line->{
+            if (Integer.parseInt(line.split(" ")[2]) < 5) {
+                accumulator.add(1);
+            }
+            return line;
+        });
+        Integer finalSummarizedValue = accumulator.value();
+
 
     }
 }
