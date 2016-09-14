@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class SpringConfig {
     @Bean
-    @Profile("DEV")
+//    @Profile("DEV") //spring.profile.active=DEV
     public SparkConf sparkConfDev() {
         return new SparkConf().setAppName("Music").setMaster("local");
     }
 
-    @Bean
-    @Profile("PROD")
+//    @Bean
+    @Profile("PROD")//spring.profile.active=PROD
     public SparkConf sparkConfProd() {
         return new SparkConf().setAppName("Music");
     }
